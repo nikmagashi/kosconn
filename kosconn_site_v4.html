@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kosconn — Outsource smart: Coding, Networks, Cloud</title>
+  <style>
+    /* ===== Colorful theme (inspired by itm8.com vibes) ===== */
+    :root{
+      --ink:#0b1220;
+      --muted:#475569;
+      --bg:#f6f9ff;
+      --panel:#ffffff;
+      --line:#e6ebf5;
+      --sky:#2e90fa;
+      --violet:#8256ff;
+      --green:#12b76a;
+      --pink:#f43f5e;
+      --amber:#f59e0b;
+      --grad-1: linear-gradient(135deg, #2e90fa 0%, #8256ff 60%, #f43f5e 100%);
+      --grad-2: linear-gradient(135deg, #12b76a 0%, #2e90fa 60%, #8256ff 100%);
+      --shadow: 0 8px 30px rgba(2, 6, 23, .08);
+      --radius: 18px;
+      --radius-lg: 22px;
+      --maxw: 1180px;
+    }
+    *{box-sizing:border-box}
+    html, body{height:100%}
+    body{
+      margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color:var(--ink); background:var(--bg); -webkit-font-smoothing:antialiased; line-height:1.55;
+    }
+    a{color:var(--sky); text-decoration:none} a:hover{color:#1b74e4}
+    .container{max-width:var(--maxw); margin:0 auto; padding:0 20px}
+    .btn{display:inline-flex; align-items:center; gap:.55rem; padding:.75rem 1.1rem; border-radius:999px; font-weight:700; border:1px solid var(--line); background:#fff; transition:.2s}
+    .btn:hover{transform:translateY(-1px); box-shadow:var(--shadow)}
+    .btn.primary{background:var(--ink); color:#fff; border-color:transparent}
+    .btn.primary:hover{opacity:.95}
+    .btn.gradient{background:var(--grad-1); color:#fff; border-color:transparent}
+    .badge{display:inline-block; font-size:.75rem; font-weight:700; letter-spacing:.02em; padding:.25rem .6rem; border-radius:999px}
+    .badge.sky{background:#e7f1ff; color:#1b74e4}
+    .badge.violet{background:#efe9ff; color:#6e38ff}
+    .badge.green{background:#e8fff3; color:#0f9d5c}
+    .badge.pink{background:#ffe7ed; color:#e11d48}
+    .card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); box-shadow:0 1px 1px rgba(2,8,23,.03)}
+    .section{padding: 3.5rem 0}
+    .h1{font-size: clamp(2rem, 4.2vw, 3.4rem); line-height:1.1; letter-spacing:-.01em}
+    .h2{font-size: clamp(1.6rem, 2.8vw, 2.3rem)}
+    .lead{font-size:1.125rem; color:var(--muted)}
+    .grid{display:grid; gap:1.1rem}
+    .grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+    @media (max-width: 960px){ .grid-2,.grid-3{grid-template-columns:1fr} }
+    header{position:sticky; top:0; z-index:40; background:rgba(255,255,255,.9); backdrop-filter:blur(8px); border-bottom:1px solid var(--line)}
+    .nav{display:flex; align-items:center; height:68px}
+    .brand{display:flex; align-items:center; gap:.6rem; font-weight:900}
+    .logo{width:36px; height:36px; border-radius:12px; background:var(--grad-1)}
+    .nav-links{margin-left:auto; display:flex; align-items:center; gap:.35rem}
+    .nav-links a{padding:.55rem .85rem; border-radius:12px; font-weight:700; color:#334155}
+    .nav-links a.active, .nav-links a:hover{color:var(--sky)}
+    .burger{display:none; border:none; background:transparent}
+    @media (max-width: 900px){ .nav-links{display:none} .burger{display:block} .mobile{border-top:1px solid var(--line); background:#fff} .mobile a{display:block; padding:12px 20px; font-weight:700; color:#334155} .mobile a.active{color:var(--sky)} .mobile .cta{margin:12px 20px 16px} }
+    .hide{display:none!important}
+    /* Extras */
+    .chips{display:flex; flex-wrap:wrap; gap:.5rem; margin-top:.75rem}
+    .chip{background:#eef2ff; color:#4f46e5; border:1px solid #e5e7eb; padding:.35rem .7rem; border-radius:999px; font-weight:700; font-size:.9rem}
+    .hero-blob{position:absolute; inset:-60px -60px auto auto; width:380px; height:380px; border-radius:50%; background:var(--grad-2); filter:blur(40px); opacity:.35; z-index:-1}
+    .colored{background:#fff; border-radius:var(--radius-lg); border:1px solid var(--line); padding:20px}
+    .benefit{display:flex; gap:.7rem}
+    .benefit .dot{width:10px; height:10px; border-radius:50%}
+    .dot.green{background:var(--green)} .dot.sky{background:var(--sky)} .dot.violet{background:var(--violet)} .dot.pink{background:var(--pink)} .dot.amber{background:var(--amber)}
+    .diagram{display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:.6rem}
+    .diagram .step{display:flex; align-items:center; gap:.6rem; background:#f8fafc; border:1px solid var(--line); border-radius:12px; padding:.6rem .8rem}
+    .diagram .arrow{margin-left:auto; opacity:.6}
+    footer{background:#0b1220; color:#cbd5e1}
+    footer a{color:#a3d3ff}
+  </style>
+</head>
+<body>
+  <!-- ===== NAV ===== -->
+  <header>
+    <div class="container nav">
+      <div class="brand"><div class="logo"></div> Kosconn</div>
+      <nav class="nav-links" aria-label="Main">
+        <a href="#home" data-view="home" class="active">HOME</a>
+        <a href="#services" data-view="services">SERVICES</a>
+        <a href="#how" data-view="how">HOW WE WORK</a>
+        <a href="#resources" data-view="resources">RESOURCES</a>
+        <a href="#about" data-view="about">WHO WE ARE</a>
+        <a href="#contact" data-view="contact">CONTACT</a>
+        <a href="#contact" data-view="contact" class="btn gradient">Start a project</a>
+      </nav>
+      <button id="burger" class="burger" aria-label="Open menu">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h16" stroke="#0b1220" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div id="mobile" class="mobile hide">
+      <a href="#home" data-view="home">Home</a>
+      <a href="#services" data-view="services">Services</a>
+      <a href="#how" data-view="how">How we work</a>
+      <a href="#resources" data-view="resources">Resources</a>
+      <a href="#about" data-view="about">Who we are</a>
+      <a href="#contact" data-view="contact">Contact</a>
+      <div class="cta"><a href="#contact" data-view="contact" class="btn gradient">Start a project</a></div>
+    </div>
+  </header>
+
+  <main id="views">
+    <!-- ===== HOME (benefits & outsourcing) ===== -->
+    <section data-view="home" class="view">
+      <div class="container section" style="position:relative">
+        <div class="hero-blob"></div>
+        <div class="grid grid-2" style="align-items:center; gap:2rem">
+          <div>
+            <div class="badge violet">Nearshore to EU member states</div>
+            <h1 class="h1" style="margin:.6rem 0 1rem">Outsource to a <span style="background:var(--grad-1); -webkit-background-clip:text; background-clip:text; color:transparent">high‑performing team</span> that ships clean code and reliable networks.</h1>
+            <p class="lead">Same timezone, English communication, weekly demos and measurable outcomes. We’re your pragmatic partner for building and running digital products.</p>
+            <div class="chips">
+              <div class="chip">Transparent pricing</div>
+              <div class="chip">Weekly demos</div>
+              <div class="chip">Outcome KPIs</div>
+              <div class="chip">Security‑first</div>
+            </div>
+            <div style="margin-top:1.1rem; display:flex; gap:.6rem; flex-wrap:wrap">
+              <a href="#contact" data-view="contact" class="btn gradient">Start a project</a>
+              <a href="#how" data-view="how" class="btn primary">See our process</a>
+            </div>
+          </div>
+          <div class="colored">
+            <div class="badge sky">Why outsourcing with us works</div>
+            <div style="height:.6rem"></div>
+            <div class="grid">
+              <div class="benefit"><span class="dot.green dot"></span><div><strong>Faster delivery</strong><div class="muted">Small senior team focused on impact. We cut queue time and ship weekly.</div></div></div>
+              <div class="benefit"><span class="dot.sky dot"></span><div><strong>Lower total cost</strong><div class="muted">Efficient, near‑shore rates with zero overhead on office, pension or equipment.</div></div></div>
+              <div class="benefit"><span class="dot.violet dot"></span><div><strong>Clear ownership</strong><div class="muted">We set goals, define KPIs and own the outcome — not only the tasks.</div></div></div>
+              <div class="benefit"><span class="dot.pink dot"></span><div><strong>Seamless collaboration</strong><div class="muted">We integrate into your tools (Jira, Teams, Git) and document everything.</div></div></div>
+              <div class="benefit"><span class="dot.amber dot"></span><div><strong>Risk‑managed</strong><div class="muted">Security practices, backups and runbooks — no black boxes.</div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container section">
+        <div class="grid grid-3">
+          <div class="card" style="padding:18px">
+            <span class="badge green">Core</span>
+            <div class="h2" style="margin:.4rem 0">Coding & Product Engineering</div>
+            <div class="lead">Our #1 focus. We build apps, APIs and integrations with clean code, tests and CI/CD — and we design for maintainability from day one.</div>
+          </div>
+          <div class="card" style="padding:18px">
+            <span class="badge sky">Foundation</span>
+            <div class="h2" style="margin:.4rem 0">Reliable Network</div>
+            <div class="lead">Great products need a dependable network. We design for uptime, security and visibility so teams can move fast without outages.</div>
+          </div>
+          <div class="card" style="padding:18px">
+            <span class="badge violet">Platform</span>
+            <div class="h2" style="margin:.4rem 0">Cloud & Operations</div>
+            <div class="lead">Efficient environments in Azure/AWS with guardrails, cost control and automation to keep your product healthy at scale.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SERVICES (Coding emphasized) ===== -->
+    <section data-view="services" class="view hide">
+      <div class="container section">
+        <h2 class="h2" style="margin-bottom:1rem">Services</h2>
+        <div class="grid grid-3">
+          <div class="card" style="padding:18px; border-top:4px solid var(--green)">
+            <div class="h2">Coding & Product</div>
+            <ul class="lead" style="margin:.6rem 0 0; padding-left:1rem; font-size:1rem">
+              <li>Web apps, portals and internal tools</li>
+              <li>APIs, data integrations, automation</li>
+              <li>UX flows, rapid prototyping, design systems</li>
+              <li>Testing, CI/CD, documentation and support</li>
+            </ul>
+          </div>
+          <div class="card" style="padding:18px; border-top:4px solid var(--sky)">
+            <div class="h2">Network as a Foundation</div>
+            <p class="lead">Performance, resilience and observability. We craft networks that prevent downtime, isolate faults quickly and scale with your business.</p>
+            <ul style="margin:.6rem 0 0; padding-left:1rem">
+              <li>Segmentation, QoS and Wi‑Fi planning</li>
+              <li>Monitoring, logging and alerting that matter</li>
+              <li>Security by design & clear runbooks</li>
+            </ul>
+          </div>
+          <div class="card" style="padding:18px; border-top:4px solid var(--violet)">
+            <div class="h2">Cloud & FinOps</div>
+            <ul class="lead" style="margin:.6rem 0 0; padding-left:1rem; font-size:1rem">
+              <li>Landing zones & guardrails</li>
+              <li>Scalable pipelines & infrastructure automation</li>
+              <li>Cost visibility and optimizations</li>
+              <li>Backup, recovery and incident readiness</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== HOW WE WORK (ITIL‑inspired) ===== -->
+    <section data-view="how" class="view hide">
+      <div class="container section">
+        <h2 class="h2" style="margin-bottom:1rem">How we work</h2>
+        <div class="card" style="padding:18px">
+          <div class="diagram">
+            <div class="step"><strong>1</strong> Initial contact <span class="arrow">→</span></div>
+            <div class="step"><strong>2</strong> Discovery & requirements <span class="arrow">→</span></div>
+            <div class="step"><strong>3</strong> Analysis & design (ITIL: Plan) <span class="arrow">→</span></div>
+            <div class="step"><strong>4</strong> Build & transition (ITIL: Build/Transition) <span class="arrow">→</span></div>
+            <div class="step"><strong>5</strong> Operate & support (ITIL: Operate) <span class="arrow">→</span></div>
+            <div class="step"><strong>6</strong> Review & improve (CSI)</div>
+          </div>
+        </div>
+        <div class="grid grid-3" style="margin-top:1rem">
+          <div class="card" style="padding:18px">
+            <span class="badge sky">1. Initial contact</span>
+            <p class="lead">We discuss goals, constraints and timelines. Short, focused call — then you get a one‑page proposal.</p>
+          </div>
+          <div class="card" style="padding:18px">
+            <span class="badge violet">2–3. Discovery & Analysis</span>
+            <p class="lead">Workshops and quick audits to understand current state. We define KPIs, risks and success criteria and draft the delivery plan.</p>
+          </div>
+          <div class="card" style="padding:18px">
+            <span class="badge green">4. Build & Transition</span>
+            <p class="lead">Agile sprints with weekly demos. Changes are documented and reviewed. We prepare runbooks and handover materials.</p>
+          </div>
+          <div class="card" style="padding:18px">
+            <span class="badge pink">5. Operate & Support</span>
+            <p class="lead">Monitoring, incident response and small enhancements. We keep the lights on while planning the next increment.</p>
+          </div>
+          <div class="card" style="padding:18px">
+            <span class="badge amber">6. Continual Improvement</span>
+            <p class="lead">We revisit KPIs and costs quarterly and propose concrete optimizations — new features, refactors or savings.</p>
+          </div>
+          <div class="card" style="padding:18px">
+            <span class="badge sky">Working style</span>
+            <ul style="margin:.4rem 0 0; padding-left:1rem">
+              <li>Single source of truth in your tools (Jira, Git, Teams)</li>
+              <li>Weekly demos; no surprise releases</li>
+              <li>Security, testing and docs by default</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== RESOURCES (aligned to process) ===== -->
+    <section data-view="resources" class="view hide">
+      <div class="container section">
+        <h2 class="h2" style="margin-bottom:1rem">Resources</h2>
+        <p class="lead">Short, practical notes that match our delivery process.</p>
+        <div class="grid grid-3" style="margin-top:1rem">
+          <div class="card" style="padding:16px"><span class="badge sky">Discovery</span><div class="h2" style="font-size:1.1rem; margin:.4rem 0"><strong>Stakeholder & KPI template</strong></div><div class="muted">Capture goals, users and measurable outcomes fast.</div></div>
+          <div class="card" style="padding:16px"><span class="badge violet">Design</span><div class="h2" style="font-size:1.1rem; margin:.4rem 0"><strong>Architecture decision record (ADR)</strong></div><div class="muted">A lightweight format to keep decisions explicit.</div></div>
+          <div class="card" style="padding:16px"><span class="badge green">Build</span><div class="h2" style="font-size:1.1rem; margin:.4rem 0"><strong>Definition of Done</strong></div><div class="muted">Checks for code, tests, docs and security.</div></div>
+          <div class="card" style="padding:16px"><span class="badge pink">Operate</span><div class="h2" style="font-size:1.1rem; margin:.4rem 0"><strong>Runbook & On‑call basics</strong></div><div class="muted">How we respond, escalate and communicate.</div></div>
+          <div class="card" style="padding:16px"><span class="badge amber">Improve</span><div class="h2" style="font-size:1.1rem; margin:.4rem 0"><strong>Quarterly review pack</strong></div><div class="muted">KPI trends, costs and next‑step proposals.</div></div>
+          <div class="card" style="padding:16px"><span class="badge sky">Costs</span><div class="h2" style="font-size:1.1rem; margin:.4rem 0"><strong>FinOps quick wins</strong></div><div class="muted">Rightsizing, schedules and storage tiers that save money.</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== WHO WE ARE (Kosovo focus) ===== -->
+    <section data-view="about" class="view hide">
+      <div class="container section">
+        <h2 class="h2" style="margin-bottom:1rem">Who we are</h2>
+        <div class="grid grid-2">
+          <div class="card" style="padding:18px">
+            <span class="badge violet">Kosovo advantage</span>
+            <p class="lead">Kosovo is one of Europe’s youngest countries — over half the population is under 30. A tech‑savvy, English‑speaking talent pool with strong work ethic and a culture of hospitality.</p>
+            <ul style="margin:.6rem 0 0; padding-left:1rem">
+              <li><strong>Youthful energy</strong> and quick learning in modern stacks.</li>
+              <li><strong>Time‑zone alignment</strong> with EU member states for real‑time collaboration.</li>
+              <li><strong>Cost efficiency</strong> without compromising on seniority.</li>
+              <li><strong>EU‑oriented mindset</strong> and cultural proximity.</li>
+            </ul>
+          </div>
+          <div class="card" style="padding:18px">
+            <span class="badge green">How we organize</span>
+            <p class="lead">Small, senior squads led by a delivery manager. Clear ownership, documentation and regular reviews keep quality high and costs predictable.</p>
+            <ul style="margin:.6rem 0 0; padding-left:1rem">
+              <li>Weekly demos and transparent backlogs</li>
+              <li>Written design notes and runbooks</li>
+              <li>Capacity you can scale up or down</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card" style="padding:18px; margin-top:1rem; border-left:4px solid var(--green)">
+          <div class="h2" style="margin-bottom:.3rem">Cost management with Kosconn</div>
+          <ul style="margin:.4rem 0 0; padding-left:1rem">
+            <li>Predictable, all‑inclusive rates (no office, pension or equipment overheads)</li>
+            <li>Monthly KPI + cost review to keep spend aligned with outcomes</li>
+            <li>Option for fixed‑price milestones when scope is clear</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CONTACT ===== -->
+    <section data-view="contact" class="view hide">
+      <div class="container section">
+        <h2 class="h2" style="margin-bottom:1rem">Start a project</h2>
+        <div class="card" style="padding:18px">
+          <form class="grid grid-2">
+            <input placeholder="Your name" aria-label="Your name" style="padding:.85rem .9rem; border:1px solid var(--line); border-radius:12px">
+            <input placeholder="Email" aria-label="Email" type="email" style="padding:.85rem .9rem; border:1px solid var(--line); border-radius:12px">
+            <input placeholder="Company" aria-label="Company" style="grid-column:1/-1; padding:.85rem .9rem; border:1px solid var(--line); border-radius:12px">
+            <textarea rows="4" placeholder="What do you want to achieve?" aria-label="Message" style="grid-column:1/-1; padding:.85rem .9rem; border:1px solid var(--line); border-radius:12px"></textarea>
+            <div><button class="btn gradient" type="button">Send</button></div>
+          </form>
+          <p class="muted" style="margin-top:10px">Prefer email? hello@kosconn.com</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <div class="container section" style="display:grid; gap:1.2rem; grid-template-columns:2fr 1fr 1fr 1fr">
+      <div>
+        <div style="display:flex; align-items:center; gap:.6rem; margin-bottom:.5rem"><div class="logo"></div><strong>Kosconn</strong></div>
+        <div style="color:#93a4bf">Outsource smart: coding first, on a rock‑solid network and cloud.</div>
+      </div>
+      <div>
+        <div class="h2" style="font-size:1rem; margin-bottom:.4rem">Services</div>
+        <div style="color:#93a4bf">Coding & Product</div>
+        <div style="color:#93a4bf">Network Foundation</div>
+        <div style="color:#93a4bf">Cloud & FinOps</div>
+      </div>
+      <div>
+        <div class="h2" style="font-size:1rem; margin-bottom:.4rem">Company</div>
+        <div style="color:#93a4bf">Who we are</div>
+        <div style="color:#93a4bf">How we work</div>
+        <div style="color:#93a4bf">Resources</div>
+      </div>
+      <div>
+        <div class="h2" style="font-size:1rem; margin-bottom:.4rem">Contact</div>
+        <div style="color:#93a4bf">hello@kosconn.com</div>
+        <div style="color:#93a4bf">Stockholm • Pristina</div>
+      </div>
+    </div>
+    <div class="container" style="color:#7b8aa8; font-size:.85rem; padding: 0 20px 28px">© <span id="year"></span> Kosconn. All rights reserved.</div>
+  </footer>
+
+  <script>
+    // Simple SPA navigation
+    const viewsRoot = document.getElementById('views');
+    const sections = Array.from(viewsRoot.querySelectorAll('[data-view]'));
+    const desktopLinks = Array.from(document.querySelectorAll('nav a[data-view]'));
+    const mobilePanel = document.getElementById('mobile');
+    const mobileLinks = Array.from(mobilePanel.querySelectorAll('a[data-view]'));
+    const burger = document.getElementById('burger');
+    function setActive(view){
+      sections.forEach(s => s.classList.toggle('hide', s.getAttribute('data-view') !== view));
+      [...desktopLinks, ...mobileLinks].forEach(a => {
+        const match = a.getAttribute('data-view') === view;
+        a.classList.toggle('active', match);
+        a.setAttribute('aria-current', match ? 'page' : 'false');
+      });
+      mobilePanel.classList.add('hide');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    function init(){
+      document.getElementById('year').textContent = new Date().getFullYear();
+      const hash = (window.location.hash || '#home').replace('#','');
+      const valid = sections.some(s => s.getAttribute('data-view') === hash);
+      setActive(valid ? hash : 'home');
+    }
+    [...desktopLinks, ...mobileLinks].forEach(a => a.addEventListener('click', e => { e.preventDefault(); const v=a.getAttribute('data-view'); window.location.hash = v; setActive(v); }));
+    burger.addEventListener('click', () => mobilePanel.classList.toggle('hide'));
+    window.addEventListener('hashchange', init);
+    init();
+  </script>
+</body>
+</html>
